@@ -12,6 +12,9 @@ def get_kompas_api7():
     return module, api, const
 
 
+# Технические переменные
+FileTypeSupported = False
+
 # Подключение к нтерфейсу программы Kompas 3D
 module7, api7, const7 = get_kompas_api7()   # Подключаемся к API7
 app7 = api7.Application                     # Получаем основной интерфейс
@@ -29,7 +32,7 @@ if application.ActiveDocument is None:
 else:
     #  Получим активный документ
     kompas_document = application.ActiveDocument
-    # kompas_document_2d = module7.IKompasDocument2D(kompas_document)
+    kompas_document_2d = module7.IKompasDocument2D(kompas_document)
 
     if kompas_document.Name == '':
         print("Активный документ не сохранён на диск!")
@@ -40,9 +43,18 @@ else:
     # Узнаём тип документа
     if kompas_document.DocumentType == 1:  # Чертёж
         print("Тип документа: Чертёж")
+        FileTypeSupported = True
 
         #  Количество листов
         print("Количество листов:", kompas_document.LayoutSheets.Count)
+
+        # Количество видов
+        print("Количество видов:", kompas_document_2d.ViewsAndLayersManager.Views.Count)
+
+        # получаем активный вид
+        active_view = kompas_document_2d.ViewsAndLayersManager.Views.ActiveView
+        print("Активный вид:", active_view.Name)
+        print("Масштаб вида:", active_view.Scale)
 
     elif kompas_document.DocumentType == 2:  # Фрагмент
         print("Тип документа: Фрагмент")
@@ -62,4 +74,9 @@ else:
     else:
         print("Неизвестный тип документа:", kompas_document.DocumentType)
 
-input("\nДля завершения нажмите Enter")
+    if not FileTypeSupported:
+        print("Этот тип документа не поддерживается!")
+
+True
+
+# input("\nДля завершения нажмите Enter")
