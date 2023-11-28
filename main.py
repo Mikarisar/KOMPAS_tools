@@ -29,12 +29,37 @@ if application.ActiveDocument is None:
 else:
     #  Получим активный документ
     kompas_document = application.ActiveDocument
-    kompas_document_2d = module7.IKompasDocument2D(kompas_document)
-    if kompas_document.Name == '':
-        print("Активный документ не сохранён!")
-    else:
-        print("Активный документ:", kompas_document.PathName)
-    #  Количество листов
-    print("Количество листов:", kompas_document.LayoutSheets.Count)
+    # kompas_document_2d = module7.IKompasDocument2D(kompas_document)
 
-input()
+    if kompas_document.Name == '':
+        print("Активный документ не сохранён на диск!")
+    else:
+        print("Активный документ:", kompas_document.Name)
+        print("Папка документа:", kompas_document.Path)
+
+    # Узнаём тип документа
+    if kompas_document.DocumentType == 1:  # Чертёж
+        print("Тип документа: Чертёж")
+
+        #  Количество листов
+        print("Количество листов:", kompas_document.LayoutSheets.Count)
+
+    elif kompas_document.DocumentType == 2:  # Фрагмент
+        print("Тип документа: Фрагмент")
+
+    elif kompas_document.DocumentType == 3:  # Спецификация
+        print("Тип документа: Спецификация")
+
+    elif kompas_document.DocumentType == 4:  # Деталь
+        print("Тип документа: Деталь")
+
+    elif kompas_document.DocumentType == 5:  # Сборка
+        print("Тип документа: Сборка")
+
+    elif kompas_document.DocumentType == 6:  # Текстовый документ
+        print("Тип документа: Текстовый документ")
+
+    else:
+        print("Неизвестный тип документа:", kompas_document.DocumentType)
+
+input("\nДля завершения нажмите Enter")
