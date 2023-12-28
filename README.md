@@ -1,2 +1,3 @@
 # KOMPAS_tools
-Tools developed for KOMPAS 3D v20
+Инструменты для КОМПАС 3D v20 на python3
+Python3 tools for KOMPAS 3D v20
