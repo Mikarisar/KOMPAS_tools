@@ -113,12 +113,19 @@ class Kompas(object):
         """
         Создание нового чертежа
         """
-        print("Создание нового чертежа...")
+        print("\nСоздание нового чертежа...")
         kompas_document = self.Documents.AddWithDefaultSettings(self.constants.ksDocumentDrawing, True)
-        # kompas_document_2d = self.module7.IKompasDocument2D(kompas_document)
-        print("Новый чертёж создан.")
+        print("Новый чертёж создан.\n")
 
-    def draw_rectangle(self, x: int, y: int, height: int, width: int, style=1, ang=0):
+    def new_fragment(self):
+        """
+        Создание нового фрагмента
+        """
+        print("\nСоздание нового фрагмента...")
+        kompas_document = self.Documents.AddWithDefaultSettings(self.constants.ksDocumentFragment, True)
+        print("Новый фрагмент создан.\n")
+
+    def draw_rectangle(self, x: float, y: float, height: float, width: float, style=1, ang=0):
         """
         Создание прямоугольника в активном документе
         :param x: координата x начальной точки
@@ -147,7 +154,7 @@ class Kompas(object):
 
         return obj
 
-    def draw_circle(self, x: int, y: int, radius: int, style=1):
+    def draw_circle(self, x: float, y: float, radius: float, style=1):
         """
         Создание окружности в активном документе
         :param x: координата x начальной точки
@@ -163,7 +170,7 @@ class Kompas(object):
 
         return obj
 
-    def draw_line(self, x1: int, y1: int, x2: int, y2: int, style=1):
+    def draw_line(self, x1: float, y1: float, x2: float, y2: float, style=1):
         """
         Создание отрезка в активном документе
         :param x1: координата x первой точки
@@ -177,5 +184,50 @@ class Kompas(object):
         obj = idoc2d.ksLineSeg(x1, y1, x2, y2, style)
 
         print("Создан отрезок с точками (", x1, ", ", y1, ") и (", x2, ", ", y2,"), стиль: ", style, sep="")
+
+        return obj
+
+    def new_view(self, x: float, y: float, name: str, scale: float, angle=0, color=0xFF0000, state=3):
+        """
+        Создание нового вида в активном документе
+        :param x: координата x начальной точки
+        :param y: координата y начальной точки
+        :param name: название вида
+        :param scale: масштаб вида
+        :param angle: угол наклона в градусах
+        :param color: цвет (HEX BGR 000000)
+        :param state: состояние???
+        :return: id вида
+        """
+        _, _, idoc2d = self.get_active_docs()
+
+        i_view_param = self.module5.ksViewParam(self.object5.GetParamStruct(self.constants.ko_ViewParam))
+        i_view_param.Init()
+        i_view_param.angle = angle
+        i_view_param.color = color
+        i_view_param.name = name
+        i_view_param.scale_ = scale
+        i_view_param.state = state
+        i_view_param.x = x
+        i_view_param.y = y
+
+        obj = idoc2d.ksCreateSheetView(i_view_param, 0)
+
+        print(f'\nСоздан вид "{name}" в точке ({x:.2f}, {y:.2f}), масштаб: {scale:.2f}, наклон: {angle:.2f}, цвет BGR: #{color:06X}, состояние: {state}\n')
+
+        return obj
+
+    def new_point(self, x: float, y: float, style=1):
+        """
+        Создание точки в активном документе
+        :param x: координата x
+        :param y: координата y
+        :param style: стиль
+        :return: id точки
+        """
+        _, _, idoc2d = self.get_active_docs()
+        obj = idoc2d.ksPoint(x, y, style)
+
+        print(f"Создана точка ({x:.2f}, {y:.2f}), стиль {style}")
 
         return obj

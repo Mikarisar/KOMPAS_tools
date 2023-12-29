@@ -2,9 +2,16 @@ from KompasClass import *
 
 kompas = Kompas()  # Запуск или подключение к Компас
 kompas.info_general()  # Вывод информации о программе
-kompas.new_drawing()  # Создание нового чертежа
-rectangle = kompas.draw_rectangle(10, 20, 100, 200, 2, 45)
-circle = kompas.draw_circle(100, 100, 40, 3)
-line = kompas.draw_line(-50, -60, 60, 50, 4)
+
+#kompas.new_drawing()  # Создание нового чертежа
+kompas.new_fragment()  # Создание нового фрагмента
+
+#view1 = kompas.new_view(25, 50, "Тестовый вид", 1 / 15, state=0, color=0x00FF00)  # Создание нового вида
+
+# Построение геометрии
+rectangle = kompas.draw_rectangle(0, 0, 100, 200, 5, 0)
+circle = kompas.draw_circle(200, 100, 40, 3)
+line = kompas.draw_line(0, 0, 200, 100, 4)
+point = kompas.new_point(500, 500, 2)
 
 True
