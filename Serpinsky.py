@@ -43,7 +43,7 @@ for _ in range(ITERATIONS):
 kompas = Kompas()  # Запуск или подключение к Компас
 kompas.info_general()  # Вывод информации о программе
 
-kompas.new_fragment()  # Создание нового фрагмента
+kompas.newfile_fragment()  # Создание нового фрагмента
 
 # Черчение точек
 for i in range(len(p)):

@@ -31,24 +31,15 @@ class Kompas(object):
         self.application = self.module7.IApplication(Dispatch("Kompas.Application.7")._oleobj_.QueryInterface(self.module7.IApplication.CLSID, pythoncom.IID_IDispatch))
         self.Documents = self.application.Documents
 
+    # МЕТОДЫ ВЫВОДА ИНФОРМАЦИИ (info_)
     def info_general(self):
         """
         Вывод информации о программе
         """
         print("######### ИНФОРМАЦИЯ О ПРОГРАММЕ #########")
-        print("Версия КОМПАС:", self.app7.ApplicationName(FullName=True))  # Печатаем название программы
-        print("Документов открыто:", self.application.Documents.Count)
+        print(f"Версия КОМПАС: {self.app7.ApplicationName(FullName=True)}")  # Печатаем название программы
+        print(f"Документов открыто: {self.application.Documents.Count}")
         print("##########################################")
-
-    def get_active_docs(self):
-        """
-        Возвращает объекты активного докумета
-        :return: kompas_document, kompas_document_2d, iDocument2D
-        """
-        kompas_document = self.application.ActiveDocument
-        kompas_document_2d = self.module7.IKompasDocument2D(kompas_document)
-        idocument_2d = self.object5.ActiveDocument2D()
-        return kompas_document, kompas_document_2d, idocument_2d
 
     def info_active(self):
         """
@@ -66,8 +57,8 @@ class Kompas(object):
             if kompas_document.Name == '':
                 print("Активный документ не сохранён на диск!")
             else:
-                print("Активный документ:", kompas_document.Name)
-                print("Папка документа:", kompas_document.Path)
+                print(f"Активный документ: {kompas_document.Name}")
+                print(f"Папка документа: {kompas_document.Path}")
 
             # Узнаём тип документа
             if kompas_document.DocumentType == 1:  # Чертёж
@@ -78,13 +69,13 @@ class Kompas(object):
 
                 print("Тип документа: Чертёж")
                 #  Количество листов
-                print("Количество листов:", kompas_document.LayoutSheets.Count)
+                print(f"Количество листов: {kompas_document.LayoutSheets.Count}")
 
                 # Количество видов
-                print("Количество видов:", kompas_document_2d.ViewsAndLayersManager.Views.Count)
+                print(f"Количество видов: {kompas_document_2d.ViewsAndLayersManager.Views.Count}")
 
-                print("Активный вид:", active_view.Name)
-                print("Масштаб вида:", active_view.Scale)
+                print(f"Активный вид:{active_view.Name}")
+                print(f"Масштаб вида:{active_view.Scale}")
 
             elif kompas_document.DocumentType == 2:  # Фрагмент
                 print("Тип документа: Фрагмент")
@@ -109,7 +100,19 @@ class Kompas(object):
 
         print("##########################################")
 
-    def new_drawing(self):
+    # МЕТОДЫ ПОЛУЧЕНИЯ ОБЪЕКТОВ (get_)
+    def get_active_docs(self):
+        """
+        Возвращает объекты активного докумета
+        :return: kompas_document, kompas_document_2d, iDocument2D
+        """
+        kompas_document = self.application.ActiveDocument
+        kompas_document_2d = self.module7.IKompasDocument2D(kompas_document)
+        idocument_2d = self.object5.ActiveDocument2D()
+        return kompas_document, kompas_document_2d, idocument_2d
+
+    # МЕТОДЫ СОЗДАНИЯ ФАЙЛОВ (newfile_)
+    def newfile_drawing(self):
         """
         Создание нового чертежа
         """
@@ -117,7 +120,7 @@ class Kompas(object):
         kompas_document = self.Documents.AddWithDefaultSettings(self.constants.ksDocumentDrawing, True)
         print("Новый чертёж создан.\n")
 
-    def new_fragment(self):
+    def newfile_fragment(self):
         """
         Создание нового фрагмента
         """
@@ -125,68 +128,7 @@ class Kompas(object):
         kompas_document = self.Documents.AddWithDefaultSettings(self.constants.ksDocumentFragment, True)
         print("Новый фрагмент создан.\n")
 
-    def draw_rectangle(self, x: float, y: float, height: float, width: float, style=1, ang=0):
-        """
-        Создание прямоугольника в активном документе
-        :param x: координата x начальной точки
-        :param y: координата y начальной точки
-        :param height: высота
-        :param width: ширина
-        :param style: стиль линии
-        :param ang: угол наклона в градусах
-        :return: id прямоугольника
-        """
-        _, _, idoc2d = self.get_active_docs()
-
-        i_rec_param = self.module5.ksRectangleParam(self.object5.GetParamStruct(self.constants.ko_RectangleParam))
-        i_rec_param.Init()
-
-        i_rec_param.x = x
-        i_rec_param.y = y
-        i_rec_param.ang = ang
-        i_rec_param.height = height
-        i_rec_param.width = width
-        i_rec_param.style = style
-
-        obj = idoc2d.ksRectangle(i_rec_param)
-
-        print("Создан прямоугольник в точке (", x, ", ", y, ") размером ШxВ ", width, "x", height, ", вращ.: ", ang, ", стиль: ", style, sep="")
-
-        return obj
-
-    def draw_circle(self, x: float, y: float, radius: float, style=1):
-        """
-        Создание окружности в активном документе
-        :param x: координата x начальной точки
-        :param y: координата y начальной точки
-        :param radius: радиус окружности
-        :param style: стиль линии
-        :return: id окружности
-        """
-        _, _, idoc2d = self.get_active_docs()
-        obj = idoc2d.ksCircle(x, y, radius, style)
-
-        print("Создана окружность в точке (", x, ", ", y, ") с радиусом ", radius, ", стиль: ", style, sep="")
-
-        return obj
-
-    def draw_line(self, x1: float, y1: float, x2: float, y2: float, style=1):
-        """
-        Создание отрезка в активном документе
-        :param x1: координата x первой точки
-        :param y1: координата y первой точки
-        :param x2: координата x второй точки
-        :param y2: координата y второй точки
-        :param style: стиль линии
-        :return: id отрезка
-        """
-        _, _, idoc2d = self.get_active_docs()
-        obj = idoc2d.ksLineSeg(x1, y1, x2, y2, style)
-
-        print("Создан отрезок с точками (", x1, ", ", y1, ") и (", x2, ", ", y2,"), стиль: ", style, sep="")
-
-        return obj
-
+    # МЕТОДЫ СОЗДАНИЯ ОБЪЕКТОВ И РАБОЧИХ ПРОСТРАНСТВ (new_)
     def new_view(self, x: float, y: float, name: str, scale: float, angle=0, color=0xFF0000, state=3):
         """
         Создание нового вида в активном документе
@@ -217,7 +159,70 @@ class Kompas(object):
 
         return obj
 
-    def new_point(self, x: float, y: float, style=1):
+    # МЕТОДЫ СОЗДАНИЯ ГЕОМЕТРИИ (draw_)
+    def draw_rectangle(self, x: float, y: float, height: float, width: float, style=1, ang=0):
+        """
+        Создание прямоугольника в активном документе
+        :param x: координата x начальной точки
+        :param y: координата y начальной точки
+        :param height: высота
+        :param width: ширина
+        :param style: стиль линии
+        :param ang: угол наклона в градусах
+        :return: id прямоугольника
+        """
+        _, _, idoc2d = self.get_active_docs()
+
+        i_rec_param = self.module5.ksRectangleParam(self.object5.GetParamStruct(self.constants.ko_RectangleParam))
+        i_rec_param.Init()
+
+        i_rec_param.x = x
+        i_rec_param.y = y
+        i_rec_param.ang = ang
+        i_rec_param.height = height
+        i_rec_param.width = width
+        i_rec_param.style = style
+
+        obj = idoc2d.ksRectangle(i_rec_param)
+
+        print(f"Создан прямоугольник в точке ({x:.2f}, {y:.2f}) размером ШxВ {width:.2f}x{height:.2f}, вращ.: {ang:.2f}, стиль: {style}")
+
+        return obj
+
+    def draw_circle(self, x: float, y: float, radius: float, style=1):
+        """
+        Создание окружности в активном документе
+        :param x: координата x начальной точки
+        :param y: координата y начальной точки
+        :param radius: радиус окружности
+        :param style: стиль линии
+        :return: id окружности
+        """
+        _, _, idoc2d = self.get_active_docs()
+        obj = idoc2d.ksCircle(x, y, radius, style)
+
+        print(f"Создана окружность в точке ({x:.2f}, {y:.2f}) с радиусом {radius:.2f}, стиль: {style}")
+
+        return obj
+
+    def draw_line(self, x1: float, y1: float, x2: float, y2: float, style=1):
+        """
+        Создание отрезка в активном документе
+        :param x1: координата x первой точки
+        :param y1: координата y первой точки
+        :param x2: координата x второй точки
+        :param y2: координата y второй точки
+        :param style: стиль линии
+        :return: id отрезка
+        """
+        _, _, idoc2d = self.get_active_docs()
+        obj = idoc2d.ksLineSeg(x1, y1, x2, y2, style)
+
+        print(f"Создан отрезок с точками ({x1:.2f}, {y1:.2f}) и ({x2:.2f}, {y2:.2f}), стиль: {style}")
+
+        return obj
+
+    def draw_point(self, x: float, y: float, style=1):
         """
         Создание точки в активном документе
         :param x: координата x
