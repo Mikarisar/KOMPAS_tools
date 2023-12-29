@@ -9,6 +9,7 @@
 -
 - Python 3.11.6
 - КОМПАС 3D v20
+- PyCharm 2023.2.4 (Community Edition)
 
 Используемые библиотеки:
 -
