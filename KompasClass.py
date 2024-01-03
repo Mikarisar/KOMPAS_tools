@@ -317,7 +317,7 @@ class Kompas(object):
         Устанавливает имя в строке "Норм. контроль" в основной надписи
         :param name: имя
         """
-        self._set_frame_field(col_num=115, text=name)
+        self._set_frame_field(col_num=114, text=name)
         print(f"Установлено имя отв. за норм. контроль: {name}")
 
     def set_approver_name(self, name: str):
@@ -325,7 +325,7 @@ class Kompas(object):
         Устанавливает имя в строке "Утвердил" в основной надписи
         :param name: имя
         """
-        self._set_frame_field(col_num=114, text=name)
+        self._set_frame_field(col_num=115, text=name)
         print(f"Установлено имя утверждающего: {name}")
 
     def set_drawing_name(self, name: str):
@@ -360,22 +360,22 @@ class Kompas(object):
         self._set_frame_field(col_num=9, text=name, font_height=7, style=32771)
         print(f"Установлено название предприятия: {name}")
 
-    def set_mass_text(self, mass: float):
+    def set_mass_val(self, mass: float):
         """
         Устанавливает значение массы в основной надписи
         *Учитывается 2 знака после запятой*
         :param mass: масса в кг
         """
         self._set_frame_field(col_num=5, text=str(f"{mass:.2f}"), font_height=5, style=32772)
-        print(f"Установлено название предприятия: {mass:.2f}")
+        print(f"Установлена масса: {mass:.2f}")
 
     def set_scale_text(self, scale: str):
         """
         Устанавливает значение массы в основной надписи
         :param scale: масштаб (пример: 1:10)
         """
-        self._set_frame_field(col_num=5, text=scale, font_height=5, style=32772)
-        print(f"Установлено название предприятия: {scale}")
+        self._set_frame_field(col_num=6, text=scale, font_height=5, style=32772)
+        print(f"Установлено обозначение масштаба: {scale}")
 
     def set_developer_date(self, date_text=""):
         """
@@ -386,5 +386,65 @@ class Kompas(object):
         if date_text == "":
             today = date.today()
             date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
-        self._set_frame_field(col_num=110, text=date_text)
+        self._set_frame_field(col_num=130, text=date_text)
         print(f'Установлена дата в строке "Разработал": {date_text}')
+
+    def set_inspector_date(self, date_text=""):
+        """
+        Устанавливает дату в строке "Проверил" в основной надписи
+        Устанавливает текущую дату при отсутствии аргументов
+        :param date_text: дата в формате ДД.ММ.ГГГГ
+        """
+        if date_text == "":
+            today = date.today()
+            date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
+        self._set_frame_field(col_num=131, text=date_text)
+        print(f'Установлена дата в строке "Проверил": {date_text}')
+
+    def set_tech_control_date(self, date_text=""):
+        """
+        Устанавливает дату в строке "Т.контр." в основной надписи
+        Устанавливает текущую дату при отсутствии аргументов
+        :param date_text: дата в формате ДД.ММ.ГГГГ
+        """
+        if date_text == "":
+            today = date.today()
+            date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
+        self._set_frame_field(col_num=132, text=date_text)
+        print(f'Установлена дата в строке "Т.контр.": {date_text}')
+
+    def set_empty_field_date(self, date_text=""):
+        """
+        Устанавливает дату в пустой строке основной надписи
+        Устанавливает текущую дату при отсутствии аргументов
+        :param date_text: дата в формате ДД.ММ.ГГГГ
+        """
+        if date_text == "":
+            today = date.today()
+            date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
+        self._set_frame_field(col_num=133, text=date_text)
+        print(f'Установлена дата в пустой строке: {date_text}')
+
+    def set_reg_control_date(self, date_text=""):
+        """
+        Устанавливает дату в строке "Н.контр." в основной надписи
+        Устанавливает текущую дату при отсутствии аргументов
+        :param date_text: дата в формате ДД.ММ.ГГГГ
+        """
+        if date_text == "":
+            today = date.today()
+            date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
+        self._set_frame_field(col_num=134, text=date_text)
+        print(f'Установлена дата в строке "Н.контр.": {date_text}')
+
+    def set_approver_date(self, date_text=""):
+        """
+        Устанавливает дату в строке "Утвердил" в основной надписи
+        Устанавливает текущую дату при отсутствии аргументов
+        :param date_text: дата в формате ДД.ММ.ГГГГ
+        """
+        if date_text == "":
+            today = date.today()
+            date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
+        self._set_frame_field(col_num=135, text=date_text)
+        print(f'Установлена дата в строке "Утвердил": {date_text}')
