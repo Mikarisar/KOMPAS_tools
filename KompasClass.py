@@ -377,13 +377,14 @@ class Kompas(object):
         self._set_frame_field(col_num=5, text=scale, font_height=5, style=32772)
         print(f"Установлено название предприятия: {scale}")
 
-    def set_developer_date(self, date=""):
+    def set_developer_date(self, date_text=""):
         """
         Устанавливает дату в строке "Разработал" в основной надписи
         Устанавливает текущую дату при отсутствии аргументов
-        :param date: дата в формате ДД.ММ.ГГГГ
+        :param date_text: дата в формате ДД.ММ.ГГГГ
         """
-        if (date == ""):
+        if date_text == "":
             today = date.today()
-            date = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
-        self._set_frame_field(col_num=110, text=date)
+            date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
+        self._set_frame_field(col_num=110, text=date_text)
+        print(f'Установлена дата в строке "Разработал": {date_text}')
