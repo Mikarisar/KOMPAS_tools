@@ -19,7 +19,6 @@ If someone need english description - let me know.`
 - datetime
 
 ## Структура:
-***
 - KompasClass.py - содержит класс Kompas для работы с САПР КОМПАС 3D
 - Test.py - сейчас это "черновик", файл для проверки работы методов класса Kompas
 - Serpinsky.py - демонстрационный скрипт, строит треугольник Серпинского из точек на новом фрагменте
