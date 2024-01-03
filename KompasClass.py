@@ -1,5 +1,6 @@
 import pythoncom
 from win32com.client import Dispatch, gencache
+from datetime import date
 
 
 class Kompas(object):
@@ -100,7 +101,7 @@ class Kompas(object):
 
         print("##########################################")
 
-    # МЕТОДЫ ПОЛУЧЕНИЯ ОБЪЕКТОВ (get_)
+    # МЕТОДЫ ПОЛУЧЕНИЯ ОБЪЕКТОВ И ПАРАМЕТРОВ (get_)
     def get_active_docs(self):
         """
         Возвращает объекты активного докумета
@@ -236,3 +237,153 @@ class Kompas(object):
         print(f"Создана точка ({x:.2f}, {y:.2f}), стиль {style}")
 
         return obj
+
+    # МЕТОДЫ ЗАДАНИЯ СВОЙСТВ ОБЪЕКТОВ И ПАРАМЕТРОВ (set_)
+    def _set_frame_field(self, col_num: int, text='', color=0x000000, font_name="GOST type A", font_height=3.5, style=32768):
+        """
+        Устанавливает текст в заданной ячейке рамки основной надписи документа
+        :param col_num: номер ячейки
+        :param text: текст
+        :param color: цвет
+        :param font_name: шрифт
+        :param font_height: высота текста
+        :param style: стиль
+        """
+        _, _, idoc2d = self.get_active_docs()
+
+        i_stamp = idoc2d.GetStamp()
+
+        i_stamp.ksOpenStamp()
+        i_stamp.ksColumnNumber(col_num)
+
+        i_textline_param = self.module5.ksTextLineParam(self.object5.GetParamStruct(self.constants.ko_TextLineParam))
+        i_textline_param.Init()
+        i_textline_param.style = style
+        i_textitem_array = self.object5.GetDynamicArray(4)
+        i_textitem_param = self.module5.ksTextItemParam(self.object5.GetParamStruct(self.constants.ko_TextItemParam))
+        i_textitem_param.Init()
+        i_textitem_param.iSNumb = 0
+        i_textitem_param.s = text
+        i_textitem_param.type = 0
+        i_textitem_font = self.module5.ksTextItemFont(i_textitem_param.GetItemFont())
+        i_textitem_font.Init()
+        i_textitem_font.bitVector = 4096
+        i_textitem_font.color = color
+        i_textitem_font.fontName = font_name
+        i_textitem_font.height = font_height
+        i_textitem_font.ksu = 1
+        i_textitem_array.ksAddArrayItem(-1, i_textitem_param)
+        i_textline_param.SetTextItemArr(i_textitem_array)
+
+        i_stamp.ksTextLine(i_textline_param)
+        # i_stamp.ksColumnNumber(col_num)
+
+        i_stamp.ksCloseStamp()
+
+    def set_developer_name(self, name: str):
+        """
+        Устанавливает имя разработчика в основной надписи
+        :param name: имя
+        """
+        self._set_frame_field(col_num=110, text=name)
+        print(f"Установлено имя разработчика: {name}")
+
+    def set_inspector_name(self, name: str):
+        """
+        Устанавливает имя проверяющего в основной надписи
+        :param name: имя
+        """
+        self._set_frame_field(col_num=111, text=name)
+        print(f"Установлено имя проверяющего: {name}")
+
+    def set_tech_control_name(self, name: str):
+        """
+        Устанавливает имя в строке "Тех. контроль" в основной надписи
+        :param name: имя
+        """
+        self._set_frame_field(col_num=112, text=name)
+        print(f"Установлено имя отв. за тех. контроль: {name}")
+
+    def set_empty_field_name(self, name: str):
+        """
+        Устанавливает имя в пустой строке основной надписи
+        :param name: имя
+        """
+        self._set_frame_field(col_num=113, text=name)
+        print(f"Установлено имя в пустой строке: {name}")
+
+    def set_reg_control_name(self, name: str):
+        """
+        Устанавливает имя в строке "Норм. контроль" в основной надписи
+        :param name: имя
+        """
+        self._set_frame_field(col_num=115, text=name)
+        print(f"Установлено имя отв. за норм. контроль: {name}")
+
+    def set_approver_name(self, name: str):
+        """
+        Устанавливает имя в строке "Утвердил" в основной надписи
+        :param name: имя
+        """
+        self._set_frame_field(col_num=114, text=name)
+        print(f"Установлено имя утверждающего: {name}")
+
+    def set_drawing_name(self, name: str):
+        """
+        Устанавливает наименование в основной надписи
+        :param name: наименование
+        """
+        self._set_frame_field(col_num=1, text=name, font_height=10, style=32769)
+        print(f"Установлено наименование: {name}")
+
+    def set_drawing_designation(self, designation: str):
+        """
+        Устанавливает обозначение в основной надписи
+        :param designation: обозначение
+        """
+        self._set_frame_field(col_num=2, text=designation, font_height=7, style=32770)
+        print(f"Установлено обозначение: {designation}")
+
+    def set_material_name(self, name: str):
+        """
+        Устанавливает название материала в основной надписи
+        :param name: название материала
+        """
+        self._set_frame_field(col_num=3, text=name, font_height=7, style=32771)
+        print(f"Установлено название материала: {name}")
+
+    def set_company_name(self, name: str):
+        """
+        Устанавливает название предприятия в основной надписи
+        :param name: название предприятия
+        """
+        self._set_frame_field(col_num=9, text=name, font_height=7, style=32771)
+        print(f"Установлено название предприятия: {name}")
+
+    def set_mass_text(self, mass: float):
+        """
+        Устанавливает значение массы в основной надписи
+        *Учитывается 2 знака после запятой*
+        :param mass: масса в кг
+        """
+        self._set_frame_field(col_num=5, text=str(f"{mass:.2f}"), font_height=5, style=32772)
+        print(f"Установлено название предприятия: {mass:.2f}")
+
+    def set_scale_text(self, scale: str):
+        """
+        Устанавливает значение массы в основной надписи
+        :param scale: масштаб (пример: 1:10)
+        """
+        self._set_frame_field(col_num=5, text=scale, font_height=5, style=32772)
+        print(f"Установлено название предприятия: {scale}")
+
+    def set_developer_date(self, date=""):
+        """
+        Устанавливает дату в строке "Разработал" в основной надписи
+        Устанавливает текущую дату при отсутствии аргументов
+        :param date: дата в формате ДД.ММ.ГГГГ
+        """
+        if (date == ""):
+            today = date.today()
+            date = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
+        self._set_frame_field(col_num=110, text=date)
