@@ -8,7 +8,7 @@ def readme():
 
 setup(
   name='KOMPAS_tools',
-  version='0.1',
+  version='0.2',
   author='Mikarisar',
   author_email='mikarisar@gmail.com',
   description='This library contains tools for KOMPAS 3D automation',
