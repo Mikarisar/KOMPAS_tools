@@ -72,7 +72,7 @@ kompas.new_view(x: float, y: float, name: str, scale: float, angle=0, color=0xFF
 - angle - угол поворота вида относительно СК
 - color - цвет вида (шестнадцатеричное число, BGR [BBGGRR])
 
-#### Создание геометрии
+#### Создание геометрии (draw_)
 ```
 kompas.draw_rectangle(x: float, y: float, height: float, width: float, style=1, ang=0)
 ```
@@ -82,6 +82,7 @@ kompas.draw_rectangle(x: float, y: float, height: float, width: float, style=1, 
 - width - ширина прямоугольника
 - style - стиль линии (1, 2, 3, ...)
 - ang - угол поворота относительно левой нижней точки (в градусах)
+- Возвращает: id прямоугольника
 ```
 kompas.draw_circle(x: float, y: float, radius: float, style=1)
 ```
@@ -89,6 +90,7 @@ kompas.draw_circle(x: float, y: float, radius: float, style=1)
 - x, y - координаты центра окружности
 - radius - радиус окружности
 - style - стиль линии (1, 2, 3, ...)
+- Возвращает: id окружности
 ```
 kompas.draw_line(x1: float, y1: float, x2: float, y2: float, style=1)
 ```
@@ -96,12 +98,31 @@ kompas.draw_line(x1: float, y1: float, x2: float, y2: float, style=1)
 - x1, y1 - координаты первой точки
 - x2, y2 - координаты второй точки
 - style - стиль линии (1, 2, 3, ...)
+- Возвращает: id линии
 ```
 kompas.draw_point(x: float, y: float, style=1)
 ```
 Создание точки
 - x, y - координаты точки
 - style - стиль точки (1, 2, 3, ...)
+- Возвращает: id точки
+
+#### Копирование (copy_)
+```
+kompas.copy_object(obj_ref: int, x0: float, y0: float, x1: float, y1:float, scale=1, angle=0, hyperlinks_copy=True, spcobj_copy=True, storages_copy=True, dimline_scale=True, attr_copy=True)
+```
+Копирование объекта
+- obj_ref - id копируемого объекта
+- x0, y0 - координаты начальной точки
+- x1, y1 - координаты конечной точки
+- scale - масштаб копии
+- angle - угол поворота копии относительно базовой точки
+- hyperlinks_copy - копировать гиперссылки?
+- spcobj_copy - копировать объекты спецификации?
+- storages_copy - копировать польз. данные и свойства?
+- dimline_scale - масштабировать выносные линии?
+- attr_copy - копировать атрибуты?
+- Возвращает: id копии
 
 #### Задание свойств объектов и параметров (set_)
 ```

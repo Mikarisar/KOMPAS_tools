@@ -3,7 +3,7 @@ from KompasClass import *
 kompas = Kompas()  # Запуск или подключение к Компас
 kompas.info_general()  # Вывод информации о программе
 
-# kompas.newfile_drawing()  # Создание нового чертежа
+kompas.newfile_drawing()  # Создание нового чертежа
 # kompas.newfile_fragment()  # Создание нового фрагмента
 
 view1_id = kompas.new_view(25, 50, "Тестовый вид", 1 / 15, state=0, color=0x00FF00)  # Создание нового вида
@@ -32,5 +32,7 @@ kompas.set_drawing_name("Наименование")
 kompas.set_drawing_designation("000.000.000АБВГД")
 kompas.set_material_name("Космический сплав")
 kompas.set_company_name("Mikarisar Co. Ltd.")
+
+print(kompas.copy_object(circle_id, 0, 0, 100, 10))
 
 True

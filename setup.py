@@ -8,7 +8,7 @@ def readme():
 
 setup(
   name='KOMPAS_tools',
-  version='0.2',
+  version='0.3',
   author='Mikarisar',
   author_email='mikarisar@gmail.com',
   description='This library contains tools for KOMPAS 3D automation',
@@ -20,7 +20,7 @@ setup(
   classifiers=[
     'Programming Language :: Python :: 3.11',
     'License :: OSI Approved :: MIT License',
-    'Operating System :: OS Independent'
+    'Operating System :: Microsoft :: Windows'
   ],
   keywords='cad drawing kompas kompas3d automation engineering',
   project_urls={

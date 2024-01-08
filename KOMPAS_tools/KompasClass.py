@@ -238,6 +238,49 @@ class Kompas(object):
 
         return obj
 
+    # МЕТОДЫ КОПИРОВАНИЯ (copy_)
+    def copy_object(self, obj_ref: int, x0: float, y0: float, x1: float, y1:float, scale=1, angle=0, hyperlinks_copy=True, spcobj_copy=True, storages_copy=True, dimline_scale=True, attr_copy=True):
+        """
+        Копирование объекта
+        :param obj_ref: id копируемого объекта
+        :param x0: координата x начальной точки
+        :param y0: координата y начальной точки
+        :param x1: координата x конечной точки
+        :param y1: координата y конечной точки
+        :param scale: масштаб копии
+        :param angle: угол поворота относительно базовой точки
+        :param hyperlinks_copy: копировать гиперссылки?
+        :param spcobj_copy: копировать объекты спецификации?
+        :param storages_copy: копировать польз. данные и свойства?
+        :param dimline_scale: масштабировать выносные линии?
+        :param attr_copy: копировать атрибуты?
+        :return: id копии
+        """
+        _, _, idoc2d = self.get_active_docs()
+
+        i_copyobject_param = self.module5.ksCopyObjectParam(self.object5.GetParamStruct(self.constants.ko_CopyObjectParam))
+        i_copyobject_param.Init()
+
+        i_copyobject_param.angle = angle
+        i_copyobject_param.attrCopy = attr_copy
+        i_copyobject_param.dimLineScale = dimline_scale
+        i_copyobject_param.hyperLinksCopy = hyperlinks_copy
+        i_copyobject_param.objRef = obj_ref
+        i_copyobject_param.scale = scale
+        i_copyobject_param.spcObjCopy = spcobj_copy
+        i_copyobject_param.storagesCopy = storages_copy
+        i_copyobject_param.xNew = x1
+        i_copyobject_param.yNew = y1
+        i_copyobject_param.xOld = x0
+        i_copyobject_param.yOld = y0
+
+        copyobj = idoc2d.ksCopyObjEx(i_copyobject_param)
+
+        print(f"Скопирован объект (id {obj_ref}) из точки ({x0:.2f}, {y0:.2f}) в точку ({x1:.2f}, {y1:.2f}), "
+              f"масштаб: {scale:.2f}, вращ.: {angle:.2f}")
+
+        return copyobj
+
     # МЕТОДЫ ЗАДАНИЯ СВОЙСТВ ОБЪЕКТОВ И ПАРАМЕТРОВ (set_)
     def _set_frame_field(self, col_num: int, text='', color=0x000000, font_name="GOST type A", font_height=3.5, style=32768):
         """
