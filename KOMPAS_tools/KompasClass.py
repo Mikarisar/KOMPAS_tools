@@ -491,3 +491,33 @@ class Kompas(object):
             date_text = f"{today.day:02d}.{today.month:02d}.{today.year:04d}"
         self._set_frame_field(col_num=135, text=date_text)
         print(f'Установлена дата в строке "Утвердил": {date_text}')
+
+    # ПРОЧИЕ МЕТОДЫ
+    def quit(self):
+        """
+        Закрывает приложение КОМПАС 3D
+        """
+        print("Закрытие КОМПАС 3D...")
+        self.object5.Quit()
+
+    def refresh(self):
+        """
+        Обновляет активное окно документа
+        """
+        print("Обновление активного окна документа...")
+        self.object5.ksRefreshActiveWindow()
+
+    def read(self, input_msg="", default_text=""):
+        """
+        Запрашивает ввод строки
+        :param input_msg: сообщение
+        :param default_text: текст по умолчанию
+        :return: введённая строка
+        """
+        print("Запрос ввода строки...")
+        out = self.object5.ksReadString(input_msg, default_text)
+
+        return out
+
+
+

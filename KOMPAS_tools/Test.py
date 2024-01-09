@@ -35,4 +35,6 @@ kompas.set_company_name("Mikarisar Co. Ltd.")
 
 print(kompas.copy_object(circle_id, 0, 0, 100, 10))
 
+# kompas.quit()
+
 True
